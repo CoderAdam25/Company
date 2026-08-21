@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="ar">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>اسم الشركة</title>
+  <link rel="stylesheet" href="stylea.css">
+</head>
+
+<body>
+  <header class="glass-header">
+    <nav class="glass-nav">
+      <div class="logo">اسم الشركة</div>
+
+
+      <ul class="nav-links">
+        <li><a href="الرئيسية.html">الرئيسية</a></li>
+        <li><a href="فيديو.html" class="active" aria-current="page">فيديو</a></li>
+        <li><a href="#الخدمات">الخدمات</a></li>
+        <li><a href="#اتصل بنا">اتصل بنا</a></li>
+        <li><a href="تسجيل الدخول.html" class="btn">تسجيل الدخول</a></li>
+        <li><a href="vedio.html" lang="en">🌐 English</a></li>
+
+
+
+
+
+      </ul>
+      <div class="menu-toggle">&#9776;</div>
+
+    </nav>
+
+
+  </header>
+
+  <div class="main-container" width="600">
+    <div class="glass-player">
+      <video id="player1" src="تكبيرات العيد بصوت القارئ إسلام صبحي _ فرحة وبهجة العيد.mp4"></video>
+      <div class="controls-overlay">
+        <div class="video-controls">
+          <button type="button" data-action="play" aria-label="تشغيل الفيديو">تشغيل</button>
+          <input type="range" data-action="progress" min="0" max="100" value="0" aria-label="تقدم الفيديو">
+          <span data-time>0:00 / 0:00</span>
+          <button type="button" data-action="mute" aria-label="كتم الفيديو">كتم</button>
+          <input type="range" data-action="volume" min="0" max="1" step="0.05" value="1" aria-label="مستوى الصوت">
+          <button type="button" data-action="fullscreen" aria-label="ملء الشاشة">ملء الشاشة</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="glass-player">
+      <video id="player2" src="تكبيرات العيد بصوت القارئ إسلام صبحي _ فرحة وبهجة العيد.mp4" muted loop></video>
+      <div class="controls-overlay">
+        <div class="video-controls">
+          <button type="button" data-action="play" aria-label="تشغيل الفيديو">تشغيل</button>
+          <input type="range" data-action="progress" min="0" max="100" value="0" aria-label="تقدم الفيديو">
+          <span data-time>0:00 / 0:00</span>
+          <button type="button" data-action="mute" aria-label="كتم الفيديو">كتم</button>
+          <input type="range" data-action="volume" min="0" max="1" step="0.05" value="1" aria-label="مستوى الصوت">
+          <button type="button" data-action="fullscreen" aria-label="ملء الشاشة">ملء الشاشة</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script src="script.js"></script>
+</body>
+
+</html>

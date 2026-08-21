@@ -1,0 +1,504 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body {
+    background: linear-gradient(100deg, #030616, #415fa1);
+}
+
+
+/* Header */
+.glass-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+/* Navbar */
+.glass-nav {
+    max-width: 1080px;
+    margin: 12px auto;
+    padding: 10px 18px;
+    height: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 20px;
+
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+
+}
+
+/* Logo */
+.logo {
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+
+}
+
+/* Links */
+.nav-links {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    font-size: 13px;
+
+}
+
+/* Default styles for the links */
+ul li a {
+    text-decoration: none;
+    color: #ffffff;
+    padding: 7px 14px;
+    transition: .5s ease;
+
+    display: block;
+    /* Make the link a block element to fill the padding area */
+}
+
+/* Styles applied when the mouse hovers over the anchor tag */
+ul li a:hover {
+    border-radius: 999px;
+    color: #ffffff;
+    background: #415fa1;
+    transition: .5s ease;
+
+}
+
+/* CTA */
+.btn {
+    padding: 7px 14px;
+    border-radius: 999px;
+    background: #ffffff;
+    color: #000000;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.active {
+    background-color: #415fa1;
+    color: white;
+    font-weight: bold;
+    border-radius: 999px;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background: #333;
+    top: 40px;
+    min-width: 150px;
+}
+
+.dropdown-menu li {
+    display: block;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.menu-toggle {
+    display: none;
+    font-size: 26px;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 20px;
+        position: absolute;
+        top: 60px;
+        left: 0;
+    }
+
+    .nav-links li {
+        text-align: center;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+}
+
+@media (max-width: 500px) {
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 20px;
+        position: absolute;
+        top: 60px;
+        left: 0;
+    }
+
+    .nav-links li {
+        text-align: center;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+}
+
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Use a gradient or image for the glass effect to be visible */
+}
+
+.main-container {
+    display: flex;
+    gap: 30px;
+}
+
+.glass-player {
+    position: relative;
+    width: 450px;
+    border-radius: 20px;
+    overflow: hidden;
+    /* Glassmorphism core properties */
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+video {
+    width: 100%;
+    display: block;
+    opacity: 0.8;
+    /* Slight transparency for the video itself */
+}
+
+.controls-overlay {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0);
+    display: flex;
+    justify-content: center;
+}
+
+button {
+    background: rgba(0, 0, 0, 0);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+}
+
+.video-controls {
+    display: grid;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    grid-template-columns: auto auto auto minmax(45px, 1fr) auto;
+}
+
+.video-controls button {
+    padding: 6px 10px;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.video-controls input[type="range"] {
+    accent-color: #415fa1;
+    cursor: pointer;
+}
+
+.video-controls [data-action="progress"] {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    width: 100%;
+}
+
+.video-controls [data-action="play"] { grid-column: 1; grid-row: 2; }
+.video-controls [data-time] { grid-column: 2; grid-row: 2; }
+.video-controls [data-action="mute"] { grid-column: 3; grid-row: 2; }
+.video-controls [data-action="volume"] { grid-column: 4; grid-row: 2; }
+.video-controls [data-action="fullscreen"] { grid-column: 5; grid-row: 2; }
+
+.video-controls [data-action="volume"] {
+    width: 70px;
+}
+
+.video-controls [data-time] {
+    color: #ffffff;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+@media (max-width: 500px) {
+    .video-controls {
+        gap: 6px;
+        grid-template-columns: auto auto auto minmax(35px, 1fr) auto;
+    }
+
+    .video-controls [data-action="progress"] {
+        grid-column: 1 / -1;
+        grid-row: 1;
+    }
+}
+
+/* */
+
+.content {
+    width: 1200px;
+    height: auto;
+    margin: auto;
+    color: #fff;
+    position: relative;
+}
+
+.content .par {
+    padding-left: 20px;
+    padding-bottom: 25px;
+    letter-spacing: 1.2px;
+    line-height: 30px;
+    font-family: tahoma;
+}
+
+.content h1 {
+    font-size: 40px;
+    padding-left: 20px;
+    margin-top: 9%;
+    letter-spacing: 2px;
+}
+
+.content .cn {
+    width: 200px;
+    height: 40px;
+    background: #ffffff;
+    border: none;
+    margin-bottom: 10px;
+    margin-left: 20px;
+    font-size: 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: .4s ease;
+
+}
+
+.content .cn a {
+    text-decoration: none;
+    color: #000;
+    transition: .3s ease;
+}
+
+.cn:hover {
+    background-color: #415fa1;
+}
+
+.content span {
+    color: #415fa1;
+    font-size: 65px;
+}
+
+:root {
+    --color-primary: #908dcb;
+}
+
+footer {
+    position: static;
+    left: 48px;
+    bottom: 58px;
+    right: 48px;
+    padding: 48px;
+    border-radius: 16px;
+    background: rgb(0 0 0 / 30%);
+    backdrop-filter: blur(20px);
+}
+
+.top,
+.bottom {
+    display: flex;
+    gap: 48px;
+}
+
+.top {
+    margin-bottom: 24px;
+}
+
+.bottom {
+    padding: 32px 0 0;
+    align-items: center;
+    border-top: 2px solid #2e2d42;
+    gap: 24px;
+}
+
+.top .left,
+.top .right {
+    flex: 1 1 50%;
+}
+
+.bottom .left {
+    flex: 1 1 auto;
+}
+
+h2 {
+    margin: 0 0 12px;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 400;
+}
+
+h2,
+p {
+    color: var(--color-primary);
+}
+
+p {
+    margin: 0;
+}
+
+blockquote {
+    padding: 0 24px 0 0;
+    margin: 0 0 24px;
+    font-size: 24px;
+}
+
+button {
+    color: #000017;
+    display: inline-block;
+    gap: 8px;
+    align-items: center;
+    border: 0;
+    border-radius: 40px;
+    padding: 12px 24px 12px 28px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+button:hover {
+    background-color: #d1e3f8;
+    color: #000017;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+button .symbols {
+    font-size: 20px;
+}
+
+.links {
+    display: flex;
+    gap: 48px;
+    padding-right: 48px;
+}
+
+.socials {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    font-size: 20px;
+}
+
+@media (width <=734px) {
+    .top {
+        flex-direction: column;
+    }
+
+    blockquote {
+        padding-right: 0;
+        text-align: center;
+    }
+}
+
+@media (width <=320px) {
+    .bottom {
+        flex-direction: column-reverse;
+    }
+
+    .links {
+        padding-left: 24px;
+        padding-right: 24px;
+        text-align: center;
+    }
+
+    .top .left {
+        text-align: center;
+    }
+
+    blockquote {
+        padding-left: 58px;
+        padding-right: 58px;
+    }
+}
+
+@media (width <=734px) {
+    .top {
+        flex-direction: column;
+    }
+
+    blockquote {
+        padding-right: 0;
+        text-align: center
+    }
+}
+
+@media (width <=320px) {
+    .bottom {
+        flex-direction: column-reverse;
+    }
+
+    .links {
+        padding-left: 24px;
+        padding-right: 24px;
+        text-align: center;
+    }
+
+    .top .left {
+        text-align: center;
+    }
+
+    blockquote {
+        padding-left: 58px;
+        padding-right: 58px;
+    }
+}

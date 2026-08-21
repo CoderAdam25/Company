@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Company Name</title>
+  <link rel="stylesheet" href="stylee.css">
+</head>
+
+<body>
+  <header class="glass-header">
+    <nav class="glass-nav">
+      <div class="logo">Company Name</div>
+
+
+      <ul class="nav-links">
+        <li><a href="home.html">Home</a></li>
+        <li><a href="vedio.html" class="active" aria-current="page">Vedios</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="sign.html" class="btn">Sign-in</a></li>
+        <li><a href="فيديو.html" lang="ar">🌐 العربية</a></li>
+
+
+
+
+      </ul>
+      <div class="menu-toggle">&#9776;</div>
+
+      <!-- aria-current="page" was in the Home link -->
+    </nav>
+  </header>
+
+
+  <div class="main-container" width="600">
+    <div class="glass-player">
+      <video id="player1" src="تكبيرات العيد بصوت القارئ إسلام صبحي _ فرحة وبهجة العيد.mp4"></video>
+      <div class="controls-overlay">
+        <div class="video-controls">
+          <button type="button" data-action="play" aria-label="Play video">Play</button>
+          <input type="range" data-action="progress" min="0" max="100" value="0" aria-label="Video progress">
+          <span data-time>0:00 / 0:00</span>
+          <button type="button" data-action="mute" aria-label="Mute video">Mute</button>
+          <input type="range" data-action="volume" min="0" max="1" step="0.05" value="1" aria-label="Volume">
+          <button type="button" data-action="fullscreen" aria-label="Enter fullscreen">Fullscreen</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="glass-player">
+      <video id="player2" src="تكبيرات العيد بصوت القارئ إسلام صبحي _ فرحة وبهجة العيد.mp4" muted loop></video>
+      <div class="controls-overlay">
+        <div class="video-controls">
+          <button type="button" data-action="play" aria-label="Play video">Play</button>
+          <input type="range" data-action="progress" min="0" max="100" value="0" aria-label="Video progress">
+          <span data-time>0:00 / 0:00</span>
+          <button type="button" data-action="mute" aria-label="Mute video">Mute</button>
+          <input type="range" data-action="volume" min="0" max="1" step="0.05" value="1" aria-label="Volume">
+          <button type="button" data-action="fullscreen" aria-label="Enter fullscreen">Fullscreen</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script src="script.js"></script>
+</body>
+
+</html>

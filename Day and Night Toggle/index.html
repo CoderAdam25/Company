@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day/Night Toggle</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="toggle-wrapper">
+        <input type="checkbox" id="toggle-checkbox">
+        <label for="toggle-checkbox" class="toggle-label">
+            
+            <div class="knob"></div>
+
+            <div class="stars">
+                <div class="star star-1"></div>
+                <div class="star star-2"></div>
+                <div class="star star-3"></div>
+                <div class="star star-4"></div>
+            </div>
+
+            <div class="clouds">
+                <div class="cloud cloud-1"></div>
+                <div class="cloud cloud-2"></div>
+                <div class="cloud cloud-3"></div>
+            </div>
+            
+        </label>
+    </div>
+
+    <h1 id="status-text">Good Morning</h1>
+
+    <script>
+        const toggle = document.getElementById('toggle-checkbox');
+        const body = document.body;
+        const text = document.getElementById('status-text');
+
+        toggle.addEventListener('change', () => {
+            // Toggle Body Class
+            body.classList.toggle('dark-mode');
+
+            // Change Greeting Text
+            if(toggle.checked) {
+                text.innerText = "Good Night";
+            } else {
+                text.innerText = "Good Morning";
+            }
+        });
+    </script>
+</body>
+</html>

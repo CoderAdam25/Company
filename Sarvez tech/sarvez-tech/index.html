@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SARVEZ TECH - Premium Apple Products</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="text-white antialiased">
+
+<div id="particles" class="fixed inset-0 pointer-events-none z-0"></div>
+
+<!-- BACK TO TOP -->
+<button onclick="scrollToTop()" id="backToTop" class="back-to-top fixed bottom-8 left-8 z-40 w-12 h-12 rounded-full liquid-glass-strong flex items-center justify-center hover:bg-white/10 transition-all shadow-lg">
+    <i data-lucide="chevron-up" class="w-6 h-6"></i>
+</button>
+
+<!-- SEARCH OVERLAY -->
+<div id="searchOverlay" class="search-overlay fixed inset-0 z-[70] flex items-start justify-center pt-32 px-4">
+    <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeSearch()"></div>
+    <div class="relative w-full max-w-2xl">
+        <div class="liquid-glass-strong rounded-3xl p-2 flex items-center">
+            <i data-lucide="search" class="w-6 h-6 text-gray-400 ml-4"></i>
+            <input type="text" id="searchInput" placeholder="Search products..." class="w-full px-4 py-4 bg-transparent text-white text-lg placeholder-gray-500 focus:outline-none" oninput="handleSearch(this.value)">
+            <button onclick="closeSearch()" class="p-3 rounded-full hover:bg-white/10 transition-colors mr-2">
+                <i data-lucide="x" class="w-5 h-5 text-gray-400"></i>
+            </button>
+        </div>
+        <div id="searchResults" class="mt-4 space-y-2 max-h-96 overflow-y-auto"></div>
+    </div>
+</div>
+
+<!-- NAVIGATION -->
+<nav class="fixed top-0 w-full z-50 liquid-glass-strong border-b border-white/10 transition-all duration-300" id="mainNav">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-20">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="goHome()">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg shadow-blue-500/30">
+                    <i data-lucide="cpu" class="w-6 h-6 text-white"></i>
+                </div>
+                <span class="text-2xl font-bold tracking-tighter bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">SARVEZ TECH</span>
+            </div>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#home" class="nav-link text-sm font-medium text-gray-300 hover:text-white transition-colors" data-section="home">Home</a>
+                <a href="#features" class="nav-link text-sm font-medium text-gray-300 hover:text-white transition-colors" data-section="features">Features</a>
+                <a href="#products" class="nav-link text-sm font-medium text-gray-300 hover:text-white transition-colors" data-section="products">Products</a>
+                <a href="#about" class="nav-link text-sm font-medium text-gray-300 hover:text-white transition-colors" data-section="about">About</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button onclick="openSearch()" class="hidden md:flex p-2 rounded-full hover:bg-white/10 transition-colors group">
+                    <i data-lucide="search" class="w-5 h-5 text-gray-300 group-hover:text-white transition-colors"></i>
+                </button>
+                <button onclick="toggleCart()" class="relative p-2 rounded-full hover:bg-white/10 transition-colors group">
+                    <i data-lucide="shopping-bag" class="w-6 h-6 text-gray-300 group-hover:text-white transition-colors"></i>
+                    <span id="cartCount" class="absolute -top-1 -right-1 w-5 h-5 bg-blue-500 rounded-full text-xs flex items-center justify-center font-bold hidden">0</span>
+                </button>
+                <div id="authButtons" class="hidden md:flex items-center space-x-3">
+                    <button onclick="openAuth('signin')" class="px-4 py-2 rounded-full text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-all">Sign In</button>
+                    <button onclick="openAuth('signup')" class="px-4 py-2 rounded-full text-sm font-medium bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white shadow-lg shadow-blue-500/25 transition-all hover:scale-105">Sign Up</button>
+                </div>
+                <div id="profileSection" class="hidden relative">
+                    <button onclick="toggleProfileDropdown()" class="flex items-center space-x-2 p-2 rounded-full hover:bg-white/10 transition-colors">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                            <span id="navAvatar" class="text-sm font-bold text-white"></span>
+                        </div>
+                        <span id="profileName" class="text-sm font-medium hidden lg:block">User</span>
+                        <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400"></i>
+                    </button>
+                    <div id="profileDropdown" class="profile-dropdown absolute right-0 top-full mt-2 w-56 liquid-glass-strong rounded-2xl border border-white/10 shadow-2xl overflow-hidden z-50">
+                        <div class="p-4 border-b border-white/10">
+                            <p class="font-semibold text-white" id="dropdownName">User</p>
+                            <p class="text-xs text-gray-400" id="dropdownEmail">user@email.com</p>
+                        </div>
+                        <div class="p-2">
+                            <button onclick="showAccountPage()" class="w-full text-left px-4 py-3 rounded-xl hover:bg-white/10 transition-colors flex items-center space-x-3">
+                                <i data-lucide="user-circle" class="w-5 h-5 text-blue-400"></i><span class="text-sm">My Account</span>
+                            </button>
+                            <button onclick="showSavedItems()" class="w-full text-left px-4 py-3 rounded-xl hover:bg-white/10 transition-colors flex items-center space-x-3">
+                                <i data-lucide="heart" class="w-5 h-5 text-pink-400"></i>
+                                <span class="text-sm">Saved Items</span>
+                                <span id="savedCountBadge" class="ml-auto text-xs bg-pink-500/20 text-pink-400 px-2 py-0.5 rounded-full hidden">0</span>
+                            </button>
+                            <button onclick="showOrderHistory()" class="w-full text-left px-4 py-3 rounded-xl hover:bg-white/10 transition-colors flex items-center space-x-3">
+                                <i data-lucide="package" class="w-5 h-5 text-green-400"></i><span class="text-sm">Order History</span>
+                            </button>
+                            <div class="border-t border-white/10 mt-2 pt-2">
+                                <button onclick="logout()" class="w-full text-left px-4 py-3 rounded-xl hover:bg-red-500/10 transition-colors flex items-center space-x-3 text-red-400">
+                                    <i data-lucide="log-out" class="w-5 h-5"></i><span class="text-sm">Logout</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-full hover:bg-white/10 transition-colors"><i data-lucide="menu" class="w-6 h-6"></i></button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div id="mobileMenu" class="fixed inset-y-0 right-0 w-80 bg-slate-900/95 backdrop-blur-xl z-50 mobile-menu border-l border-white/10 p-8">
+    <button onclick="toggleMobileMenu()" class="absolute top-6 right-6 p-2 rounded-full hover:bg-white/10"><i data-lucide="x" class="w-6 h-6"></i></button>
+    <div class="mt-16 space-y-6">
+        <div class="relative">
+            <i data-lucide="search" class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+            <input type="text" placeholder="Search..." class="w-full pl-10 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500" oninput="handleSearch(this.value)">
+        </div>
+        <a href="#home" onclick="toggleMobileMenu()" class="block text-xl font-medium text-gray-300 hover:text-white transition-colors">Home</a>
+        <a href="#products" onclick="toggleMobileMenu()" class="block text-xl font-medium text-gray-300 hover:text-white transition-colors">Products</a>
+        <a href="#features" onclick="toggleMobileMenu()" class="block text-xl font-medium text-gray-300 hover:text-white transition-colors">Features</a>
+        <a href="#about" onclick="toggleMobileMenu()" class="block text-xl font-medium text-gray-300 hover:text-white transition-colors">About</a>
+        <div id="mobileAuthButtons" class="pt-6 border-t border-white/10 space-y-3">
+            <button onclick="toggleMobileMenu(); openAuth('signin')" class="w-full py-3 rounded-xl liquid-glass text-center font-medium">Sign In</button>
+            <button onclick="toggleMobileMenu(); openAuth('signup')" class="w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-center font-medium">Sign Up</button>
+        </div>
+        <div id="mobileProfileSection" class="hidden pt-6 border-t border-white/10 space-y-3">
+            <div class="flex items-center space-x-3 mb-4">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                    <span id="mobileNavAvatar" class="text-sm font-bold text-white"></span>
+                </div>
+                <div><p class="font-semibold" id="mobileProfileName">User</p><p class="text-xs text-gray-400" id="mobileProfileEmail">user@email.com</p></div>
+            </div>
+            <button onclick="toggleMobileMenu(); showAccountPage()" class="w-full py-3 rounded-xl liquid-glass text-left px-4 flex items-center space-x-3"><i data-lucide="user-circle" class="w-5 h-5 text-blue-400"></i><span>My Account</span></button>
+            <button onclick="toggleMobileMenu(); showSavedItems()" class="w-full py-3 rounded-xl liquid-glass text-left px-4 flex items-center space-x-3"><i data-lucide="heart" class="w-5 h-5 text-pink-400"></i><span>Saved Items</span></button>
+            <button onclick="toggleMobileMenu(); logout()" class="w-full py-3 rounded-xl bg-red-500/10 text-red-400 text-left px-4 flex items-center space-x-3"><i data-lucide="log-out" class="w-5 h-5"></i><span>Logout</span></button>
+        </div>
+    </div>
+</div>
+
+<!-- AUTH MODAL -->
+<div id="authModal" class="auth-modal fixed inset-0 z-[60] flex items-center justify-center p-4">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeAuth()"></div>
+    <div class="auth-modal-content relative w-full max-w-md liquid-glass-strong rounded-3xl border border-white/10 shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto">
+        <button onclick="closeAuth()" class="absolute top-4 right-4 p-2 rounded-full hover:bg-white/10 transition-colors z-10"><i data-lucide="x" class="w-5 h-5 text-gray-400"></i></button>
+        <div class="p-8">
+            <div class="flex space-x-8 mb-8 border-b border-white/10 pb-4">
+                <button onclick="switchAuthTab('signin')" id="tabSignIn" class="auth-tab text-lg font-semibold text-gray-400 pb-2">Sign In</button>
+                <button onclick="switchAuthTab('signup')" id="tabSignUp" class="auth-tab text-lg font-semibold text-gray-400 pb-2">Sign Up</button>
+            </div>
+            <form id="signInForm" onsubmit="handleSignIn(event)" class="space-y-5">
+                <div><label class="block text-sm font-medium text-gray-400 mb-2">Email Address</label>
+                    <input type="email" id="signinEmail" required class="auth-input w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none transition-all" placeholder="you@example.com">
+                </div>
+                <div><label class="block text-sm font-medium text-gray-400 mb-2">Password</label>
+                    <div class="relative">
+                        <input type="password" id="signinPassword" required class="auth-input w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none transition-all" placeholder="Enter your password">
+                        <button type="button" onclick="togglePassword('signinPassword')" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white"><i data-lucide="eye" class="w-5 h-5"></i></button>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between text-sm">
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" id="rememberMe" class="w-4 h-4 rounded border-white/20 bg-white/5 text-blue-500">
+                        <span class="text-gray-400">Remember me</span>
+                    </label>
+                    <button type="button" onclick="showForgotPassword()" class="text-blue-400 hover:text-blue-300 transition-colors">Forgot password?</button>
+                </div>
+                <button type="submit" id="signinBtn" class="w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 font-semibold text-white shadow-lg shadow-blue-500/25 transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2">
+                    <span id="signinBtnText">Sign In</span><i data-lucide="arrow-right" class="w-5 h-5" id="signinBtnIcon"></i>
+                </button>
+            </form>
+            <form id="signUpForm" onsubmit="handleSignUp(event)" class="space-y-5 hidden">
+                <div><label class="block text-sm font-medium text-gray-400 mb-2">Full Name</label>
+                    <input type="text" id="signupName" required class="auth-input w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none transition-all" placeholder="John Doe">
+                </div>
+                <div><label class="block text-sm font-medium text-gray-400 mb-2">Email Address</label>
+                    <input type="email" id="signupEmail" required class="auth-input w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none transition-all" placeholder="you@example.com">
+                </div>
+                <div><label class="block text-sm font-medium text-gray-400 mb-2">Password</label>
+                    <div class="relative">
+                        <input type="password" id="signupPassword" required minlength="6" class="auth-input w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none transition-all" placeholder="Min 6 characters">
+                        <button type="button" onclick="togglePassword('signupPassword')" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white"><i data-lucide="eye" class="w-5 h-5"></i></button>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1">Must be at least 6 characters</p>
+                </div>
+                <div><label class="block text-sm font-medium text-gray-400 mb-2">Confirm Password</label>
+                    <input type="password" id="signupConfirmPassword" required class="auth-input w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none transition-all" placeholder="Confirm your password">
+                </div>
+                <label class="flex items-start space-x-2 cursor-pointer">
+                    <input type="checkbox" id="agreeTerms" required class="mt-1 w-4 h-4 rounded border-white/20 bg-white/5 text-blue-500">
+                    <span class="text-sm text-gray-400">I agree to the <a href="#" class="text-blue-400 hover:underline">Terms of Service</a> and <a href="#" class="text-blue-400 hover:underline">Privacy Policy</a></span>
+                </label>
+                <button type="submit" id="signupBtn" class="w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 font-semibold text-white shadow-lg shadow-blue-500/25 transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2">
+                    <span id="signupBtnText">Create Account</span><i data-lucide="user-plus" class="w-5 h-5" id="signupBtnIcon"></i>
+                </button>
+            </form>
+            <div id="authError" class="hidden mt-4 p-3 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center space-x-2">
+                <i data-lucide="alert-circle" class="w-5 h-5 text-red-400 flex-shrink-0"></i><span class="text-sm text-red-400" id="authErrorText">Error</span>
+            </div>
+            <div id="authSuccess" class="hidden mt-4 p-3 rounded-xl bg-green-500/10 border border-green-500/20 flex items-center space-x-2">
+                <i data-lucide="check-circle" class="w-5 h-5 text-green-400 flex-shrink-0"></i><span class="text-sm text-green-400" id="authSuccessText">Success</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- PRODUCT DETAIL MODAL -->
+<div id="productModal" class="product-modal fixed inset-0 z-[60] flex items-center justify-center p-4">
+    <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="closeProductModal()"></div>
+    <div class="product-modal-content relative w-full max-w-4xl liquid-glass-strong rounded-3xl border border-white/10 shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto">
+        <button onclick="closeProductModal()" class="absolute top-4 right-4 p-2 rounded-full hover:bg-white/10 transition-colors z-10"><i data-lucide="x" class="w-6 h-6 text-gray-400"></i></button>
+        <div id="productModalContent" class="grid md:grid-cols-2 gap-0">
+            <!-- Content injected by JS -->
+        </div>
+    </div>
+</div>
+
+<!-- CART SIDEBAR -->
+<div id="cartSidebar" class="fixed inset-y-0 right-0 w-full sm:w-96 bg-slate-900/95 backdrop-blur-xl z-50 transform translate-x-full transition-transform duration-300 border-l border-white/10 flex flex-col">
+    <div class="p-6 border-b border-white/10 flex justify-between items-center">
+        <h2 class="text-2xl font-bold">Your Cart</h2>
+        <button onclick="toggleCart()" class="p-2 rounded-full hover:bg-white/10 transition-colors"><i data-lucide="x" class="w-6 h-6"></i></button>
+    </div>
+    <div id="cartItems" class="flex-1 overflow-y-auto p-6 space-y-4">
+        <p class="text-gray-400 text-center py-12">Your cart is empty</p>
+    </div>
+    <div id="cartFooter" class="hidden p-6 border-t border-white/10 space-y-4">
+        <div class="space-y-2">
+            <div class="flex justify-between text-sm text-gray-400"><span>Subtotal</span><span id="cartSubtotal">$0</span></div>
+            <div class="flex justify-between text-sm text-gray-400"><span>Shipping</span><span>Free</span></div>
+            <div class="flex justify-between text-lg font-semibold pt-2 border-t border-white/10"><span>Total</span><span id="cartTotal">$0</span></div>
+        </div>
+        <button onclick="checkout()" class="w-full py-4 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 font-semibold text-white shadow-lg shadow-blue-500/25 transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2">
+            <span>Checkout</span><i data-lucide="arrow-right" class="w-5 h-5"></i>
+        </button>
+        <button onclick="clearCart()" class="w-full py-2 rounded-xl text-sm text-red-400 hover:text-red-300 transition-colors">Clear Cart</button>
+    </div>
+</div>
+<div id="cartOverlay" onclick="toggleCart()" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 hidden transition-opacity opacity-0"></div>
+
+<!-- ==================== HOME PAGE ==================== -->
+<div id="homePage">
+<section id="home" class="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+    <div class="max-w-7xl mx-auto">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <div class="space-y-8 z-10">
+                <div class="inline-flex items-center space-x-2 liquid-glass px-4 py-2 rounded-full">
+                    <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                    <span class="text-sm font-medium text-gray-300">New Arrivals Available</span>
+                </div>
+                <h1 class="text-5xl sm:text-7xl font-bold leading-tight tracking-tight">Experience the <br><span class="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent glow-text">Future</span> of Tech</h1>
+                <p class="text-xl text-gray-400 max-w-lg leading-relaxed">Discover the latest Apple products with cutting-edge technology, wrapped in our signature liquid glass design aesthetic.</p>
+                <div class="flex flex-wrap gap-4">
+                    <button onclick="scrollToProducts()" class="px-8 py-4 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 font-semibold text-white shadow-lg shadow-blue-500/25 transition-all hover:scale-105 active:scale-95 flex items-center space-x-2"><span>Shop Now</span><i data-lucide="arrow-right" class="w-5 h-5"></i></button>
+                    <button onclick="scrollToFeatures()" class="px-8 py-4 rounded-full liquid-glass font-semibold text-white hover:bg-white/10 transition-all hover:scale-105 active:scale-95">Learn More</button>
+                </div>
+                <div class="flex items-center space-x-8 pt-4">
+                    <div><div class="text-3xl font-bold text-white">50K+</div><div class="text-sm text-gray-400">Happy Customers</div></div>
+                    <div class="w-px h-12 bg-white/10"></div>
+                    <div><div class="text-3xl font-bold text-white">99%</div><div class="text-sm text-gray-400">Satisfaction Rate</div></div>
+                    <div class="w-px h-12 bg-white/10"></div>
+                    <div><div class="text-3xl font-bold text-white">24/7</div><div class="text-sm text-gray-400">Support</div></div>
+                </div>
+            </div>
+            <div class="relative float-animation">
+                <div class="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full blur-3xl"></div>
+                <div class="relative liquid-glass rounded-3xl p-8 transform rotate-3 hover:rotate-0 transition-transform duration-700">
+                    <img src="https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=800&h=600&fit=crop" alt="Apple Products" class="w-full h-auto rounded-2xl shadow-2xl" loading="lazy">
+                    <div class="absolute -bottom-6 -right-6 liquid-glass-strong rounded-2xl p-4 shadow-xl">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center"><i data-lucide="trending-up" class="w-6 h-6 text-green-400"></i></div>
+                            <div><div class="text-sm font-semibold">Best Seller</div><div class="text-xs text-gray-400">iPhone 15 Pro Max</div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="features" class="py-20 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16"><h2 class="text-4xl font-bold mb-4">Why Choose <span class="text-blue-400">SARVEZ TECH</span></h2><p class="text-gray-400 max-w-2xl mx-auto">We provide the best shopping experience with premium products and exceptional service.</p></div>
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="liquid-glass-card rounded-2xl p-8 text-center group">
+                <div class="w-16 h-16 mx-auto mb-6 rounded-2xl bg-blue-500/10 flex items-center justify-center group-hover:bg-blue-500/20 transition-colors"><i data-lucide="shield-check" class="w-8 h-8 text-blue-400"></i></div>
+                <h3 class="text-xl font-semibold mb-3">Authentic Products</h3><p class="text-gray-400">100% genuine Apple products with official warranty and certification.</p>
+            </div>
+            <div class="liquid-glass-card rounded-2xl p-8 text-center group">
+                <div class="w-16 h-16 mx-auto mb-6 rounded-2xl bg-purple-500/10 flex items-center justify-center group-hover:bg-purple-500/20 transition-colors"><i data-lucide="zap" class="w-8 h-8 text-purple-400"></i></div>
+                <h3 class="text-xl font-semibold mb-3">Fast Delivery</h3><p class="text-gray-400">Express shipping worldwide with real-time tracking and secure packaging.</p>
+            </div>
+            <div class="liquid-glass-card rounded-2xl p-8 text-center group">
+                <div class="w-16 h-16 mx-auto mb-6 rounded-2xl bg-pink-500/10 flex items-center justify-center group-hover:bg-pink-500/20 transition-colors"><i data-lucide="headphones" class="w-8 h-8 text-pink-400"></i></div>
+                <h3 class="text-xl font-semibold mb-3">24/7 Support</h3><p class="text-gray-400">Round-the-clock customer service with dedicated technical support team.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="products" class="py-20 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row justify-between items-center mb-12 gap-4">
+            <div><h2 class="text-4xl font-bold mb-2">Featured Products</h2><p class="text-gray-400">Explore our latest collection</p></div>
+            <div class="flex space-x-2 overflow-x-auto pb-2 max-w-full">
+                <button onclick="filterProducts('all')" class="filter-btn active px-6 py-2 rounded-full liquid-glass text-sm font-medium hover:bg-white/10 transition-all whitespace-nowrap" data-filter="all">All</button>
+                <button onclick="filterProducts('iphone')" class="filter-btn px-6 py-2 rounded-full liquid-glass text-sm font-medium hover:bg-white/10 transition-all whitespace-nowrap" data-filter="iphone">iPhone</button>
+                <button onclick="filterProducts('macbook')" class="filter-btn px-6 py-2 rounded-full liquid-glass text-sm font-medium hover:bg-white/10 transition-all whitespace-nowrap" data-filter="macbook">MacBook</button>
+                <button onclick="filterProducts('ipad')" class="filter-btn px-6 py-2 rounded-full liquid-glass text-sm font-medium hover:bg-white/10 transition-all whitespace-nowrap" data-filter="ipad">iPad</button>
+                <button onclick="filterProducts('watch')" class="filter-btn px-6 py-2 rounded-full liquid-glass text-sm font-medium hover:bg-white/10 transition-all whitespace-nowrap" data-filter="watch">Watch</button>
+                <button onclick="filterProducts('airpods')" class="filter-btn px-6 py-2 rounded-full liquid-glass text-sm font-medium hover:bg-white/10 transition-all whitespace-nowrap" data-filter="airpods">AirPods</button>
+            </div>
+        </div>
+        <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
+        <div id="noResults" class="hidden text-center py-12">
+            <i data-lucide="search-x" class="w-16 h-16 text-gray-600 mx-auto mb-4"></i>
+            <p class="text-gray-400 text-lg">No products found</p>
+        </div>
+    </div>
+</section>
+
+<section id="about" class="py-20 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+        <div class="liquid-glass rounded-3xl p-8 md:p-16 relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10"></div>
+            <div class="relative z-10 grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-4xl font-bold mb-6">About SARVEZ TECH</h2>
+                    <p class="text-gray-300 text-lg leading-relaxed mb-6">Founded with a passion for technology and design, SARVEZ TECH brings you the finest Apple products with an unmatched shopping experience.</p>
+                    <p class="text-gray-300 text-lg leading-relaxed mb-8">We believe technology should be accessible, beautiful, and functional. Every product is carefully selected to ensure you get the best.</p>
+                    <div class="flex space-x-4">
+                        <div class="flex items-center space-x-2 text-gray-400"><i data-lucide="check-circle" class="w-5 h-5 text-green-400"></i><span>Certified Reseller</span></div>
+                        <div class="flex items-center space-x-2 text-gray-400"><i data-lucide="check-circle" class="w-5 h-5 text-green-400"></i><span>Premium Support</span></div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="liquid-glass-card rounded-2xl p-6 text-center"><i data-lucide="award" class="w-10 h-10 text-yellow-400 mx-auto mb-3"></i><div class="text-2xl font-bold">Top Rated</div><div class="text-sm text-gray-400">Seller 2024</div></div>
+                    <div class="liquid-glass-card rounded-2xl p-6 text-center"><i data-lucide="globe" class="w-10 h-10 text-blue-400 mx-auto mb-3"></i><div class="text-2xl font-bold">Global</div><div class="text-sm text-gray-400">Shipping</div></div>
+                    <div class="liquid-glass-card rounded-2xl p-6 text-center"><i data-lucide="refresh-cw" class="w-10 h-10 text-green-400 mx-auto mb-3"></i><div class="text-2xl font-bold">30-Day</div><div class="text-sm text-gray-400">Returns</div></div>
+                    <div class="liquid-glass-card rounded-2xl p-6 text-center"><i data-lucide="lock" class="w-10 h-10 text-purple-400 mx-auto mb-3"></i><div class="text-2xl font-bold">Secure</div><div class="text-sm text-gray-400">Payments</div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-20 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto text-center">
+        <div class="liquid-glass rounded-3xl p-12 relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10"></div>
+            <div class="relative z-10">
+                <h2 class="text-3xl font-bold mb-4">Stay Updated</h2>
+                <p class="text-gray-400 mb-8">Subscribe to get exclusive offers and early access to new products.</p>
+                <form id="subscribeForm" onsubmit="handleSubscribe(event)" class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                    <div class="relative flex-1">
+                        <input type="email" id="subscriberEmail" placeholder="Enter your email" required class="w-full px-6 py-4 rounded-full bg-white/5 border border-white/10 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-white placeholder-gray-500 transition-all">
+                        <div id="emailLoading" class="absolute inset-0 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center hidden">
+                            <i data-lucide="loader-2" class="w-5 h-5 spinner text-blue-400"></i>
+                        </div>
+                    </div>
+                    <button type="submit" id="subscribeBtn" class="px-8 py-4 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 font-semibold text-white shadow-lg shadow-blue-500/25 transition-all hover:scale-105 active:scale-95 whitespace-nowrap flex items-center justify-center gap-2 min-w-[140px]">
+                        <span id="btnText">Subscribe</span>
+                        <i data-lucide="send" class="w-4 h-4" id="btnIcon"></i>
+                    </button>
+                </form>
+                <div id="subscribeSuccess" class="hidden mt-6">
+                    <div class="inline-flex items-center space-x-2 liquid-glass-strong px-6 py-3 rounded-full">
+                        <div class="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center checkmark-animate">
+                            <i data-lucide="check" class="w-5 h-5 text-green-400"></i>
+                        </div>
+                        <span class="text-green-400 font-semibold">Successfully subscribed!</span>
+                    </div>
+                    <p class="text-gray-400 text-sm mt-2">Check your inbox for confirmation.</p>
+                </div>
+                <div id="subscribeError" class="hidden mt-4">
+                    <div class="inline-flex items-center space-x-2 bg-red-500/10 border border-red-500/20 px-6 py-3 rounded-full">
+                        <i data-lucide="alert-circle" class="w-5 h-5 text-red-400"></i>
+                        <span class="text-red-400 text-sm" id="errorText">Something went wrong. Please try again.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</div>
+
+<!-- ==================== ACCOUNT PAGE ==================== -->
+<div id="accountPage" class="account-section pt-24 pb-20 px-4 sm:px-6 lg:px-8 min-h-screen">
+    <div class="max-w-5xl mx-auto">
+        <button onclick="goHome()" class="mb-6 flex items-center space-x-2 text-gray-400 hover:text-white transition-colors"><i data-lucide="arrow-left" class="w-5 h-5"></i><span>Back to Home</span></button>
+        <div class="grid md:grid-cols-[280px_1fr] gap-8">
+            <div class="space-y-4">
+                <div class="liquid-glass-strong rounded-2xl p-6 text-center">
+                    <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center mb-4">
+                        <span id="accountAvatar" class="text-2xl font-bold text-white"></span>
+                    </div>
+                    <h3 class="text-xl font-bold" id="accountName">User Name</h3>
+                    <p class="text-sm text-gray-400" id="accountEmail">user@email.com</p>
+                    <p class="text-xs text-gray-500 mt-2">Member since <span id="memberSince">2024</span></p>
+                </div>
+                <div class="liquid-glass rounded-2xl p-2 space-y-1">
+                    <button onclick="showAccountTab('overview')" id="tabOverview" class="account-tab w-full text-left px-4 py-3 rounded-xl hover:bg-white/10 transition-colors flex items-center space-x-3 bg-white/10"><i data-lucide="layout-dashboard" class="w-5 h-5 text-blue-400"></i><span>Overview</span></button>
+                    <button onclick="showAccountTab('personal')" id="tabPersonal" class="account-tab w-full text-left px-4 py-3 rounded-xl hover:bg-white/10 transition-colors flex items-center space-x-3"><i data-lucide="user-cog" class="w-5 h-5 text-purple-400"></i><span>Personal Info</span></button>
+                    <button onclick="showAccountTab('saved')" id="tabSaved" class="account-tab w-full text-left px-4 py-3 rounded-xl hover:bg-white/10 transition-colors flex items-center space-x-3"><i data-lucide="heart" class="w-5 h-5 text-pink-400"></i><span>Saved Items</span><span id="sidebarSavedCount" class="ml-auto text-xs bg-pink-500/20 text-pink-400 px-2 py-0.5 rounded-full hidden">0</span></button>
+                    <button onclick="showAccountTab('orders')" id="tabOrders" class="account-tab w-full text-left px-4 py-3 rounded-xl hover:bg-white/10 transition-colors flex items-center space-x-3"><i data-lucide="package" class="w-5 h-5 text-green-400"></i><span>Order History</span></button>
+                    <button onclick="showAccountTab('security')" id="tabSecurity" class="account-tab w-full text-left px-4 py-3 rounded-xl hover:bg-white/10 transition-colors flex items-center space-x-3"><i data-lucide="shield" class="w-5 h-5 text-yellow-400"></i><span>Security</span></button>
+                </div>
+                <button onclick="logout()" class="w-full py-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500/20 transition-colors flex items-center justify-center space-x-2"><i data-lucide="log-out" class="w-5 h-5"></i><span>Logout</span></button>
+            </div>
+            <div class="space-y-6">
+                <div id="contentOverview" class="account-tab-content">
+                    <h2 class="text-2xl font-bold mb-6">Account Overview</h2>
+                    <div class="grid sm:grid-cols-2 gap-4 mb-8">
+                        <div class="liquid-glass rounded-2xl p-6"><div class="flex items-center space-x-4"><div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center"><i data-lucide="shopping-cart" class="w-6 h-6 text-blue-400"></i></div><div><p class="text-2xl font-bold" id="overviewCartCount">0</p><p class="text-sm text-gray-400">Items in Cart</p></div></div></div>
+                        <div class="liquid-glass rounded-2xl p-6"><div class="flex items-center space-x-4"><div class="w-12 h-12 rounded-xl bg-pink-500/10 flex items-center justify-center"><i data-lucide="heart" class="w-6 h-6 text-pink-400"></i></div><div><p class="text-2xl font-bold" id="overviewSavedCount">0</p><p class="text-sm text-gray-400">Saved Items</p></div></div></div>
+                        <div class="liquid-glass rounded-2xl p-6"><div class="flex items-center space-x-4"><div class="w-12 h-12 rounded-xl bg-green-500/10 flex items-center justify-center"><i data-lucide="package" class="w-6 h-6 text-green-400"></i></div><div><p class="text-2xl font-bold" id="overviewOrderCount">0</p><p class="text-sm text-gray-400">Total Orders</p></div></div></div>
+                        <div class="liquid-glass rounded-2xl p-6"><div class="flex items-center space-x-4"><div class="w-12 h-12 rounded-xl bg-yellow-500/10 flex items-center justify-center"><i data-lucide="wallet" class="w-6 h-6 text-yellow-400"></i></div><div><p class="text-2xl font-bold" id="overviewTotalSpent">$0</p><p class="text-sm text-gray-400">Total Spent</p></div></div></div>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-4">Recent Activity</h3>
+                    <div id="recentActivity" class="space-y-3"><p class="text-gray-400 text-center py-8">No recent activity</p></div>
+                </div>
+                <div id="contentPersonal" class="account-tab-content hidden">
+                    <h2 class="text-2xl font-bold mb-6">Personal Information</h2>
+                    <div class="liquid-glass rounded-2xl p-6 space-y-6">
+                        <div class="grid sm:grid-cols-2 gap-6">
+                            <div><label class="block text-sm font-medium text-gray-400 mb-2">Full Name</label><input type="text" id="editName" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all"></div>
+                            <div><label class="block text-sm font-medium text-gray-400 mb-2">Email Address</label><input type="email" id="editEmail" disabled class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-gray-400 cursor-not-allowed"></div>
+                            <div><label class="block text-sm font-medium text-gray-400 mb-2">Phone Number</label><input type="tel" id="editPhone" placeholder="+1 (555) 000-0000" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all"></div>
+                            <div><label class="block text-sm font-medium text-gray-400 mb-2">Location</label><input type="text" id="editLocation" placeholder="City, Country" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all"></div>
+                        </div>
+                        <div><label class="block text-sm font-medium text-gray-400 mb-2">Bio</label><textarea id="editBio" rows="3" placeholder="Tell us about yourself..." class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all resize-none"></textarea></div>
+                        <div class="flex justify-end space-x-4">
+                            <button onclick="resetPersonalInfo()" class="px-6 py-3 rounded-xl liquid-glass hover:bg-white/10 transition-colors">Cancel</button>
+                            <button onclick="savePersonalInfo()" class="px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 font-semibold text-white shadow-lg shadow-blue-500/25 transition-all hover:scale-105">Save Changes</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="contentSaved" class="account-tab-content hidden">
+                    <h2 class="text-2xl font-bold mb-6">Saved Items</h2>
+                    <div id="savedItemsGrid" class="grid sm:grid-cols-2 gap-4"><p class="text-gray-400 text-center py-12 col-span-full">No saved items yet. Browse products and click the heart icon to save!</p></div>
+                </div>
+                <div id="contentOrders" class="account-tab-content hidden">
+                    <h2 class="text-2xl font-bold mb-6">Order History</h2>
+                    <div id="orderHistoryList" class="space-y-4"><p class="text-gray-400 text-center py-12">No orders yet. Start shopping!</p></div>
+                </div>
+                <div id="contentSecurity" class="account-tab-content hidden">
+                    <h2 class="text-2xl font-bold mb-6">Security Settings</h2>
+                    <div class="space-y-6">
+                        <div class="liquid-glass rounded-2xl p-6">
+                            <h3 class="text-lg font-semibold mb-4">Change Password</h3>
+                            <form onsubmit="changePassword(event)" class="space-y-4 max-w-md">
+                                <div><label class="block text-sm font-medium text-gray-400 mb-2">Current Password</label><input type="password" id="currentPassword" required class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all"></div>
+                                <div><label class="block text-sm font-medium text-gray-400 mb-2">New Password</label><input type="password" id="newPassword" required minlength="6" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all"></div>
+                                <div><label class="block text-sm font-medium text-gray-400 mb-2">Confirm New Password</label><input type="password" id="confirmNewPassword" required class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all"></div>
+                                <button type="submit" class="px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 font-semibold text-white shadow-lg shadow-blue-500/25 transition-all hover:scale-105">Update Password</button>
+                            </form>
+                        </div>
+                        <div class="liquid-glass rounded-2xl p-6">
+                            <h3 class="text-lg font-semibold mb-4 text-red-400">Danger Zone</h3>
+                            <p class="text-gray-400 mb-4">Once you delete your account, all your data will be permanently removed.</p>
+                            <button onclick="deleteAccount()" class="px-6 py-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500/20 transition-colors">Delete Account</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="border-t border-white/10 py-12 px-4 sm:px-6 lg:px-8" id="mainFooter">
+    <div class="max-w-7xl mx-auto">
+        <div class="grid md:grid-cols-4 gap-8 mb-8">
+            <div class="col-span-2">
+                <div class="flex items-center space-x-3 mb-4">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center"><i data-lucide="cpu" class="w-5 h-5 text-white"></i></div>
+                    <span class="text-xl font-bold">SARVEZ TECH</span>
+                </div>
+                <p class="text-gray-400 max-w-sm">Your premium destination for Apple products. Experience technology with style and confidence.</p>
+            </div>
+            <div><h4 class="font-semibold mb-4">Quick Links</h4><ul class="space-y-2 text-gray-400"><li><a href="#home" class="hover:text-white transition-colors">Home</a></li><li><a href="#products" class="hover:text-white transition-colors">Products</a></li><li><a href="#features" class="hover:text-white transition-colors">Features</a></li><li><a href="#about" class="hover:text-white transition-colors">About</a></li></ul></div>
+            <div><h4 class="font-semibold mb-4">Contact</h4><ul class="space-y-2 text-gray-400"><li class="flex items-center space-x-2"><i data-lucide="mail" class="w-4 h-4"></i><span>support@sarveztech.com</span></li><li class="flex items-center space-x-2"><i data-lucide="phone" class="w-4 h-4"></i><span>+1 (555) 123-4567</span></li><li class="flex items-center space-x-2"><i data-lucide="map-pin" class="w-4 h-4"></i><span>San Francisco, CA</span></li></ul></div>
+        </div>
+        <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center">
+            <p class="text-gray-500 text-sm"> 2024 SARVEZ TECH. All rights reserved.</p>
+            <div class="flex space-x-4 mt-4 md:mt-0">
+                <a href="#" class="w-10 h-10 rounded-full liquid-glass flex items-center justify-center hover:bg-white/10 transition-colors"><i data-lucide="twitter" class="w-5 h-5"></i></a>
+                <a href="#" class="w-10 h-10 rounded-full liquid-glass flex items-center justify-center hover:bg-white/10 transition-colors"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                <a href="#" class="w-10 h-10 rounded-full liquid-glass flex items-center justify-center hover:bg-white/10 transition-colors"><i data-lucide="facebook" class="w-5 h-5"></i></a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- TOAST -->
+<div id="toast" class="fixed bottom-8 right-8 z-50 toast">
+    <div class="liquid-glass-strong rounded-2xl p-4 flex items-center space-x-3 shadow-2xl">
+        <div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center"><i data-lucide="check" class="w-5 h-5 text-green-400"></i></div>
+        <div><div class="font-semibold" id="toastTitle">Success</div><div class="text-sm text-gray-400" id="toastMessage">Item added to cart</div></div>
+    </div>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
