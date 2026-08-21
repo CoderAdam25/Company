@@ -1,0 +1,6 @@
+after ediditing paste this in therminal 
+
+cd "/Users/adam_ahmed/Desktop/VSCODE/New Website Workspace"
+git add .
+git commit -m "Update website"
+git push
