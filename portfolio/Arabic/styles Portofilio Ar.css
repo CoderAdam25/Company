@@ -3,9 +3,7 @@
    ===================================================== */
 
 * {
-    font-family: 'Vazirmatn', 'Segoe UI', Arial, sans-serif;}
-
-html {
+    font-family: 'Vazirmatn', sans-serif;
     scroll-behavior: smooth;
 }
 
