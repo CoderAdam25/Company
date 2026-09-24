@@ -1,19 +1,40 @@
 // =====================================================
 // LIQUID GLASS PORTFOLIO — JavaScript
 // =====================================================
+// Initialize EmailJS
+(function() {
+  emailjs.init({
+    publicKey: "YOUR_PUBLIC_KEY",
+  });
+})();
 
-// EmailJS Config — REPLACE WITH YOUR KEYS
+// Handle Form Submission
+document.getElementById('contact-form').addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  emailjs.sendForm('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', this)
+    .then(() => {
+      alert('Message sent successfully!');
+      this.reset();
+    }, (error) => {
+      alert('Failed to send message...', error);
+    });
+});
+// Configuration object referenced in your code
 const EMAILJS_CONFIG = {
-    PUBLIC_KEY: 'YOUR_PUBLIC_KEY',
-    SERVICE_ID: 'YOUR_SERVICE_ID',
-    TEMPLATE_ID: 'YOUR_TEMPLATE_ID'
+    PUBLIC_KEY: 'YOUR_PUBLIC_KEY',   // Replace with your actual key
+    SERVICE_ID: 'YOUR_SERVICE_ID',   // Replace with your Service ID
+    TEMPLATE_ID: 'YOUR_TEMPLATE_ID'  // Replace with your Template ID
 };
 
-// Initialize EmailJS if key is provided
-if (EMAILJS_CONFIG.PUBLIC_KEY && !EMAILJS_CONFIG.PUBLIC_KEY.includes('YOUR_')) {
-    emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
-}
-
+// Initialize EmailJS with your public key
+(function() {
+    if (!EMAILJS_CONFIG.PUBLIC_KEY.includes('YOUR_')) {
+        emailjs.init({
+            publicKey: EMAILJS_CONFIG.PUBLIC_KEY,
+        });
+    }
+})();
 // =====================================================
 // MOBILE MENU
 // =====================================================
